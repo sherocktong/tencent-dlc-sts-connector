@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tencent.dbeaver</groupId>
+    <artifactId>com.tencent.dbeaver.ext.dlc.parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Tencent DLC DBeaver Plugin — Parent</name>
+    <description>DBeaver plugin for Tencent Cloud Data Lake Compute (DLC) JDBC driver.</description>
+
+    <properties>
+        <tycho.version>4.0.6</tycho.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>com.tencent.dbeaver.ext.dlc</module>
+        <module>com.tencent.dbeaver.ext.dlc.feature</module>
+        <module>com.tencent.dbeaver.ext.dlc.site</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <resolver>p2</resolver>
+                    <pomDependencies>consider</pomDependencies>
+                    <executionEnvironment>JavaSE-21</executionEnvironment>
+                    <target>
+                        <artifact>
+                            <groupId>com.tencent.dbeaver</groupId>
+                            <artifactId>com.tencent.dbeaver.ext.dlc</artifactId>
+                            <version>1.0.0-SNAPSHOT</version>
+                            <classifier>dbeaver-local</classifier>
+                        </artifact>
+                    </target>
+                    <environments>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>aarch64</arch>
+                        </environment>
+                    </environments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

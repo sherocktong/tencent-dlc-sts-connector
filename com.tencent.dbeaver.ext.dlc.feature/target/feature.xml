@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.tencent.dbeaver.ext.dlc.feature"
+      label="Tencent DLC DBeaver Feature"
+      version="1.0.0.202606120641"
+      provider-name="Tencent Cloud">
+
+   <description url="https://github.com/kangtong/tencent-dlc-sts-connector">
+      DBeaver plugin for Tencent Cloud Data Lake Compute (DLC) JDBC driver.
+   </description>
+
+   <copyright>
+      Copyright (c) 2026 Bing Tong and contributors.
+   </copyright>
+
+   <license url="https://www.apache.org/licenses/LICENSE-2.0/">
+      Apache License, Version 2.0
+   </license>
+
+   <plugin
+         id="com.tencent.dbeaver.ext.dlc"
+         download-size="39"
+         install-size="54"
+         version="1.0.0.202606120641"
+         unpack="false"/>
+
+</feature>

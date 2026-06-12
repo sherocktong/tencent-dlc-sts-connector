@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='1'>
+  <artifact classifier='org.eclipse.update.feature' id='com.tencent.dbeaver.ext.dlc.feature' version='1.0.0.202606120641'>
+    <properties size='10'>
+      <property name='artifact.size' value='809'/>
+      <property name='download.size' value='809'/>
+      <property name='download.checksum.sha-512' value='650666393944b97d5ac93da84029437857fa9f149b24e01149184a62fc6e1744d99997abcbbb520551d0d243ba3506fab1d1de2a8b240c7511a4bc1d6ecb5438'/>
+      <property name='download.checksum.sha-1' value='9953585f8be8ebf9e71c383dd0dbdc6a46c55b00'/>
+      <property name='download.checksum.sha-256' value='04c5644f171774a238a51fde9b6424878f42ca743ddef3bf70a4031b965b9474'/>
+      <property name='maven-groupId' value='com.tencent.dbeaver'/>
+      <property name='maven-artifactId' value='com.tencent.dbeaver.ext.dlc.feature'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+      <property name='maven-type' value='eclipse-feature'/>
+      <property name='download.contentType' value='application/zip'/>
+    </properties>
+  </artifact>
+</artifacts>

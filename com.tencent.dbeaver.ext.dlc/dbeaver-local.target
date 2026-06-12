@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="DBeaver Local 26.0.2" sequenceNumber="1">
+  <locations>
+    <location path="/Applications/DBeaver.app/Contents/Eclipse" type="Directory"/>
+  </locations>
+  <environment>
+    <os>macosx</os>
+    <ws>cocoa</ws>
+    <arch>aarch64</arch>
+    <nl>en</nl>
+  </environment>
+  <launcherArgs>
+    <programArgs>-os macosx -ws cocoa -arch aarch64</programArgs>
+    <vmArgs>-Dosgi.requiredJavaVersion=21</vmArgs>
+  </launcherArgs>
+  <jreContainer>org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21</jreContainer>
+</target>

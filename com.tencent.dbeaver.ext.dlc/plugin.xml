@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<plugin>
+
+    <extension point="org.jkiss.dbeaver.dataSourceProvider">
+        <datasource
+                class="com.tencent.dbeaver.ext.dlc.TencentDLCDataSourceProvider"
+                description="Tencent Cloud Data Lake Compute (DLC) datasource"
+                id="tencent_dlc"
+                parent="generic"
+                label="Tencent DLC"
+                icon="icons/dlc_icon.png"
+                dialect="generic">
+            <drivers managable="true">
+                <driver
+                        id="tencent_dlc_spark"
+                        label="Tencent DLC Spark SQL"
+                        icon="icons/dlc_icon.png"
+                        iconBig="icons/dlc_icon_big.png"
+                        class="com.tencent.cloud.dlc.jdbc.DlcDriver"
+                        sampleURL="jdbc:dlc:{host}"
+                        defaultPort=""
+                        customEndpoint="true"
+                        description="Tencent Cloud Data Lake Compute JDBC driver"
+                        category="Tencent"
+                        webURL="https://cloud.tencent.com/document/product/1342"
+                        supportedConfigurationTypes="MANUAL,URL"
+                        categories="sql,cloud,analytic"
+                        singleConnection="false">
+
+                    <file type="jar" path="/Users/kangtong/.local/share/jdbc/drivers/dlc-jdbc-2.5.9-jar-with-dependencies.jar"/>
+
+                    <parameter name="supports-references" value="false"/>
+                    <parameter name="supports-indexes" value="false"/>
+                    <parameter name="supports-delimiter-in-views" value="false"/>
+                    <parameter name="supports-limits" value="true"/>
+                    <parameter name="query-get-active-db" value="SELECT CURRENT_DATABASE()"/>
+                    <parameter name="query-set-active-db" value="USE ?"/>
+                </driver>
+
+                <main-properties drivers="*">
+                    <propertyGroup label="Settings">
+                        <property id="host" label="Host" type="string" defaultValue="dlc.tencentcloudapi.com"/>
+                    </propertyGroup>
+                </main-properties>
+                <provider-properties drivers="*">
+                    <propertyGroup label="DLC Settings">
+                        <property id="region" label="Region" type="string" description="Tencent Cloud region, e.g. ap-singapore" defaultValue="ap-singapore"/>
+                        <property id="task_type" label="Task Type" type="string" description="DLC task type, e.g. SparkSQLTask" defaultValue="SparkSQLTask"/>
+                        <property id="data_engine_name" label="Data Engine Name" type="string" description="Data engine name"/>
+                        <property id="datasource_connection_name" label="Datasource Connection Name" type="string" description="Datasource connection name, e.g. DataLakeCatalog" defaultValue="DataLakeCatalog"/>
+                        <property id="result_type" label="Result Type" type="string" description="Result type, e.g. COS" defaultValue="COS"/>
+                        <property id="read_type" label="Read Type" type="string" description="Read type, e.g. Stream" defaultValue="Stream"/>
+                    </propertyGroup>
+                </provider-properties>
+            </drivers>
+        </datasource>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.generic.meta">
+        <meta id="tencent_dlc"
+              class="com.tencent.dbeaver.ext.dlc.TencentDLCMetaModel"
+              driverClass="com.tencent.cloud.dlc.jdbc.DlcDriver"
+              dialect="generic"/>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.dataSourceAuth">
+        <authModel
+                id="tencent_dlc_native"
+                label="Tencent DLC SecretId / SecretKey / Token"
+                class="com.tencent.dbeaver.ext.dlc.auth.TencentDLCAuthModel"
+                default="true">
+            <datasource id="tencent_dlc"/>
+        </authModel>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.ui.propertyConfigurator">
+        <propertyConfigurator
+                class="com.tencent.dbeaver.ext.dlc.auth.TencentDLCAuthModel"
+                uiClass="com.tencent.dbeaver.ext.dlc.ui.TencentDLCAuthModelConfigurator"/>
+    </extension>
+
+    <extension point="org.jkiss.dbeaver.dataSourceView">
+        <view
+                id="com.tencent.dbeaver.ext.dlc.dataSourceWizardView"
+                targetID="org.jkiss.dbeaver.ext.ui.newConnectionWizard"
+                dataSource="tencent_dlc"
+                label="Tencent DLC Connection"
+                class="com.tencent.dbeaver.ext.dlc.ui.TencentDLCConnectionPage"
+                icon="icons/dlc_icon.png">
+        </view>
+        <view
+                id="com.tencent.dbeaver.ext.dlc.dataSourceEditorView"
+                targetID="org.jkiss.dbeaver.ext.ui.editConnectionDialog"
+                dataSource="tencent_dlc"
+                label="Tencent DLC Connection"
+                class="com.tencent.dbeaver.ext.dlc.ui.TencentDLCConnectionPage"
+                icon="icons/dlc_icon.png">
+        </view>
+    </extension>
+
+</plugin>

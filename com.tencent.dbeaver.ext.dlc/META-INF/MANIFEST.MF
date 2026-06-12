@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DBeaver Tencent DLC Plugin
+Bundle-SymbolicName: com.tencent.dbeaver.ext.dlc;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Tencent Cloud
+Require-Bundle: org.jkiss.dbeaver.model,
+ org.jkiss.dbeaver.model.sql,
+ org.jkiss.dbeaver.ext.generic,
+ org.jkiss.dbeaver.ui,
+ org.jkiss.dbeaver.ui.editors.connection,
+ org.eclipse.core.runtime,
+ org.eclipse.swt,
+ org.eclipse.jface
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: com.tencent.dbeaver.ext.dlc

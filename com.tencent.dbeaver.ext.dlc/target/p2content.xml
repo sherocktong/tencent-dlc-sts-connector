@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='com.tencent.dbeaver.ext.dlc' version='1.0.0.202606120641' generation='2'>
+    <update id='com.tencent.dbeaver.ext.dlc' range='[0.0.0,1.0.0.202606120641)' severity='0'/>
+    <properties size='6'>
+      <property name='org.eclipse.equinox.p2.name' value='DBeaver Tencent DLC Plugin'/>
+      <property name='org.eclipse.equinox.p2.provider' value='Tencent Cloud'/>
+      <property name='maven-groupId' value='com.tencent.dbeaver'/>
+      <property name='maven-artifactId' value='com.tencent.dbeaver.ext.dlc'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+      <property name='maven-type' value='eclipse-plugin'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='com.tencent.dbeaver.ext.dlc' version='1.0.0.202606120641'/>
+      <provided namespace='osgi.bundle' name='com.tencent.dbeaver.ext.dlc' version='1.0.0.202606120641'/>
+      <provided namespace='osgi.identity' name='com.tencent.dbeaver.ext.dlc' version='1.0.0.202606120641'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='10'>
+      <required namespace='osgi.bundle' name='org.jkiss.dbeaver.model' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.jkiss.dbeaver.model.sql' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.jkiss.dbeaver.ext.generic' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.jkiss.dbeaver.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.jkiss.dbeaver.ui.editors.connection' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.swt' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jface' range='0.0.0'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=21))'>
+        <description>
+          com.tencent.dbeaver.ext.dlc
+        </description>
+      </requiredProperties>
+      <required namespace='org.eclipse.equinox.p2.iu' name='com.tencent.dbeaver.ext.dlc.source' range='[1.0.0.202606120641,1.0.0.202606120641]' optional='true'>
+        <filter>
+          (org.eclipse.update.install.sources=true)
+        </filter>
+      </required>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='com.tencent.dbeaver.ext.dlc' version='1.0.0.202606120641'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: com.tencent.dbeaver.ext.dlc;singleton:=true&#xA;Bundle-Version: 1.0.0.202606120641&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>
