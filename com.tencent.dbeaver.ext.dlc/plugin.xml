@@ -18,7 +18,7 @@
                         label="Tencent DLC Spark SQL"
                         icon="icons/dlc_icon.png"
                         iconBig="icons/dlc_icon_big.png"
-                        class="com.tencent.cloud.dlc.jdbc.DlcDriver"
+                        class="com.tencent.dlc.core.jdbc.DlcDriverWrapper"
                         sampleURL="jdbc:dlc:{host}"
                         defaultPort=""
                         customEndpoint="true"
@@ -61,7 +61,7 @@
     <extension point="org.jkiss.dbeaver.generic.meta">
         <meta id="tencent_dlc"
               class="com.tencent.dbeaver.ext.dlc.TencentDLCMetaModel"
-              driverClass="com.tencent.cloud.dlc.jdbc.DlcDriver"
+              driverClass="com.tencent.dlc.core.jdbc.DlcDriverWrapper"
               dialect="generic"/>
     </extension>
 

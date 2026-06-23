@@ -16,7 +16,7 @@
  */
 package com.tencent.dbeaver.ext.dlc.ui;
 
-import com.tencent.dbeaver.ext.dlc.TencentDLCConstants;
+import com.tencent.dlc.core.TencentDLCConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

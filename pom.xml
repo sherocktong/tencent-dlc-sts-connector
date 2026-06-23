@@ -18,6 +18,7 @@
     </properties>
 
     <modules>
+        <module>com.tencent.dlc.core</module>
         <module>com.tencent.dbeaver.ext.dlc</module>
         <module>com.tencent.dbeaver.ext.dlc.feature</module>
         <module>com.tencent.dbeaver.ext.dlc.site</module>
@@ -37,7 +38,7 @@
                 <version>${tycho.version}</version>
                 <configuration>
                     <resolver>p2</resolver>
-                    <pomDependencies>consider</pomDependencies>
+                    <pomDependencies>wrapAsBundle</pomDependencies>
                     <executionEnvironment>JavaSE-21</executionEnvironment>
                     <target>
                         <artifact>

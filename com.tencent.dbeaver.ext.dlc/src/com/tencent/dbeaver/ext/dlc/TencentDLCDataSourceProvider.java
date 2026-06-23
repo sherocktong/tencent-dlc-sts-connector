@@ -16,6 +16,8 @@
  */
 package com.tencent.dbeaver.ext.dlc;
 
+import com.tencent.dlc.core.DlcUrlBuilder;
+import com.tencent.dlc.core.TencentDLCConstants;
 import org.jkiss.code.NotNull;
 import org.jkiss.dbeaver.DBException;
 import org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider;
@@ -63,31 +65,22 @@ public class TencentDLCDataSourceProvider extends GenericDataSourceProvider {
             host = TencentDLCConstants.DEFAULT_HOST;
         }
 
-        StringBuilder url = new StringBuilder();
-        url.append(TencentDLCConstants.JDBC_URL_PREFIX).append(host);
+        java.util.Map<String, String> params = new java.util.LinkedHashMap<>();
+        params.put(TencentDLCConstants.PROP_TASK_TYPE, getProperty(connectionInfo, TencentDLCConstants.PROP_TASK_TYPE));
+        params.put(TencentDLCConstants.PROP_REGION, getProperty(connectionInfo, TencentDLCConstants.PROP_REGION));
+        params.put(TencentDLCConstants.PROP_DATA_ENGINE_NAME, getProperty(connectionInfo, TencentDLCConstants.PROP_DATA_ENGINE_NAME));
+        params.put(TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME, getProperty(connectionInfo, TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME));
+        params.put(TencentDLCConstants.PROP_RESULT_TYPE, getProperty(connectionInfo, TencentDLCConstants.PROP_RESULT_TYPE));
+        params.put(TencentDLCConstants.PROP_READ_TYPE, getProperty(connectionInfo, TencentDLCConstants.PROP_READ_TYPE));
 
-        List<String> params = new ArrayList<>();
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_TASK_TYPE);
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_REGION);
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_DATA_ENGINE_NAME);
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME);
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_RESULT_TYPE);
-        addParam(params, connectionInfo, TencentDLCConstants.PROP_READ_TYPE);
-
-        for (int i = 0; i < params.size(); i++) {
-            url.append(i == 0 ? '?' : '&').append(params.get(i));
-        }
-
-        return url.toString();
+        return DlcUrlBuilder.buildUrl(host, params);
     }
 
-    private static void addParam(List<String> params, DBPConnectionConfiguration connectionInfo, String key) {
+    private static String getProperty(DBPConnectionConfiguration connectionInfo, String key) {
         String value = connectionInfo.getProviderProperty(key);
         if (CommonUtils.isEmpty(value)) {
             value = connectionInfo.getProperty(key);
         }
-        if (!CommonUtils.isEmpty(value)) {
-            params.add(key + "=" + value);
-        }
+        return value;
     }
 }

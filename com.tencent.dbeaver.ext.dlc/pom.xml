@@ -14,4 +14,44 @@
     <packaging>eclipse-plugin</packaging>
 
     <name>Tencent DLC DBeaver Plugin</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tencent.dlc</groupId>
+            <artifactId>dlc-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-core-jar</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.tencent.dlc</groupId>
+                                    <artifactId>dlc-core</artifactId>
+                                    <version>1.0.0-SNAPSHOT</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.basedir}/lib</outputDirectory>
+                                    <destFileName>dlc-core-1.0.0-SNAPSHOT.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

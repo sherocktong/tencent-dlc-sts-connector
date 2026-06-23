@@ -18,7 +18,7 @@ package com.tencent.dbeaver.ext.dlc.auth;
 
 import org.jkiss.code.NotNull;
 import org.jkiss.dbeaver.DBException;
-import com.tencent.dbeaver.ext.dlc.TencentDLCConstants;
+import com.tencent.dlc.core.TencentDLCConstants;
 import org.jkiss.dbeaver.model.DBPDataSource;
 import org.jkiss.dbeaver.model.DBPDataSourceContainer;
 import org.jkiss.dbeaver.model.connection.DBPConnectionConfiguration;
