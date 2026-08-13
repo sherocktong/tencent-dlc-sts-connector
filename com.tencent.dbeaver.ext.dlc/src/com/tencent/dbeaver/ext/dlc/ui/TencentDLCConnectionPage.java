@@ -46,6 +46,7 @@ public class TencentDLCConnectionPage extends ConnectionPageWithAuth implements 
     private Text datasourceConnectionNameText;
     private Text resultTypeText;
     private Text readTypeText;
+    private Text timezoneText;
 
     private final DriverPropertiesDialogPage driverPropsPage;
 
@@ -93,6 +94,9 @@ public class TencentDLCConnectionPage extends ConnectionPageWithAuth implements 
 
             readTypeText = UIUtils.createLabelText(addrGroup, "Read Type", TencentDLCConstants.DEFAULT_READ_TYPE);
             readTypeText.addModifyListener(textListener);
+
+            timezoneText = UIUtils.createLabelText(addrGroup, "Timezone", "");
+            timezoneText.addModifyListener(textListener);
         }
 
         createAuthPanel(settingsGroup, 1);
@@ -125,6 +129,7 @@ public class TencentDLCConnectionPage extends ConnectionPageWithAuth implements 
         setTextValue(datasourceConnectionNameText, connectionInfo, TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME, TencentDLCConstants.DEFAULT_DATASOURCE_CONNECTION_NAME);
         setTextValue(resultTypeText, connectionInfo, TencentDLCConstants.PROP_RESULT_TYPE, TencentDLCConstants.DEFAULT_RESULT_TYPE);
         setTextValue(readTypeText, connectionInfo, TencentDLCConstants.PROP_READ_TYPE, TencentDLCConstants.DEFAULT_READ_TYPE);
+        setTextValue(timezoneText, connectionInfo, TencentDLCConstants.PROP_TIMEZONE, "");
     }
 
     private static void setTextValue(Text text, DBPConnectionConfiguration connectionInfo, String key, String defaultValue) {
@@ -150,6 +155,7 @@ public class TencentDLCConnectionPage extends ConnectionPageWithAuth implements 
         saveProviderProperty(connectionInfo, datasourceConnectionNameText, TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME);
         saveProviderProperty(connectionInfo, resultTypeText, TencentDLCConstants.PROP_RESULT_TYPE);
         saveProviderProperty(connectionInfo, readTypeText, TencentDLCConstants.PROP_READ_TYPE);
+        saveProviderProperty(connectionInfo, timezoneText, TencentDLCConstants.PROP_TIMEZONE);
 
         super.saveSettings(dataSource);
     }

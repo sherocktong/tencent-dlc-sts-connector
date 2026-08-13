@@ -37,6 +37,7 @@ public final class TencentDLCConstants {
     public static final String PROP_DATASOURCE_CONNECTION_NAME = "datasource_connection_name";
     public static final String PROP_RESULT_TYPE = "result_type";
     public static final String PROP_READ_TYPE = "read_type";
+    public static final String PROP_TIMEZONE = "timezone";
 
     // Auth properties
     public static final String PROP_AUTH_TOKEN = "token";

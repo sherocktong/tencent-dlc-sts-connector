@@ -72,6 +72,7 @@ public class TencentDLCDataSourceProvider extends GenericDataSourceProvider {
         params.put(TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME, getProperty(connectionInfo, TencentDLCConstants.PROP_DATASOURCE_CONNECTION_NAME));
         params.put(TencentDLCConstants.PROP_RESULT_TYPE, getProperty(connectionInfo, TencentDLCConstants.PROP_RESULT_TYPE));
         params.put(TencentDLCConstants.PROP_READ_TYPE, getProperty(connectionInfo, TencentDLCConstants.PROP_READ_TYPE));
+        params.put(TencentDLCConstants.PROP_TIMEZONE, getProperty(connectionInfo, TencentDLCConstants.PROP_TIMEZONE));
 
         return DlcUrlBuilder.buildUrl(host, params);
     }

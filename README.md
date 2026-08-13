@@ -242,7 +242,7 @@ rm -f ~/.zcompdump && autoload -Uz compinit && compinit
 The JDBC URL is constructed automatically from the connection page:
 
 ```
-jdbc:dlc:{host}?task_type={task_type}&region={region}&data_engine_name={data_engine_name}&datasource_connection_name={datasource_connection_name}&result_type={result_type}&read_type={read_type}
+jdbc:dlc:{host}?task_type={task_type}&region={region}&data_engine_name={data_engine_name}&datasource_connection_name={datasource_connection_name}&result_type={result_type}&read_type={read_type}&timezone={timezone}
 ```
 
 All parameters except `host` are optional and omitted when empty.
