@@ -30,13 +30,14 @@ import java.util.regex.Pattern;
  * column list.</p>
  *
  * <p>The rewrite is conservative: it only matches simple {@code DESCRIBE}
- * and {@code DESC} statements against a single table. Anything more complex
- * is passed through unchanged.</p>
+ * and {@code DESC} statements against a single table, optionally qualified
+ * as {@code schema.table} or {@code catalog.schema.table}. Anything more
+ * complex is passed through unchanged.</p>
  */
 public final class DlcQueryRewriter {
 
     private static final Pattern DESCRIBE_PATTERN = Pattern.compile(
-        "^\\s*(?:DESCRIBE|DESC)\\s+(?:TABLE\\s+)?(?:(?:EXTENDED|FORMATTED)\\s+)?(?:`?([^`\\.]+)`?\\.)?(?:`?([^`\\s]+)`?)\\s*;?\\s*$",
+        "^\\s*(?:DESCRIBE|DESC)\\s+(?:TABLE\\s+)?(?:(?:EXTENDED|FORMATTED)\\s+)?(?:`?([^`\\.]+)`?\\.)?(?:`?([^`\\.]+)`?\\.)?(?:`?([^`\\s]+)`?)\\s*;?\\s*$",
         Pattern.CASE_INSENSITIVE
     );
 
@@ -58,16 +59,30 @@ public final class DlcQueryRewriter {
 
         Matcher matcher = DESCRIBE_PATTERN.matcher(sql);
         if (matcher.matches()) {
-            String schema = matcher.group(1);
-            String table = matcher.group(2);
+            String first = matcher.group(1);
+            String schema = matcher.group(2);
+            String table = matcher.group(3);
+            String catalog = null;
+            if (schema == null || schema.isEmpty()) {
+                // Two-part (or unqualified) name: the first part is the schema, not a catalog.
+                schema = first;
+            } else {
+                catalog = first;
+            }
+            StringBuilder where = new StringBuilder();
+            if (catalog != null && !catalog.isEmpty()) {
+                where.append("catalog_name = '").append(escape(catalog)).append("' AND ");
+            }
             if (schema == null || schema.isEmpty()) {
                 schema = "current_database()";
             } else {
                 schema = "'" + escape(schema) + "'";
             }
+            where.append("schema_name = ").append(schema)
+                .append(" AND table_name = '").append(escape(table)).append("'");
             return "SELECT column_name AS col_name, column_type AS data_type, column_comment AS comment "
                 + "FROM information_schema.columns "
-                + "WHERE schema_name = " + schema + " AND table_name = '" + escape(table) + "' "
+                + "WHERE " + where + " "
                 + "ORDER BY column_position";
         }
 

@@ -89,6 +89,34 @@ class DlcQueryRewriterTest {
     }
 
     @Test
+    void describeWithCatalogIsRewritten() {
+        String sql = "DESCRIBE DataLakeCatalog.gold_transaction.transaction_fact";
+        String rewritten = DlcQueryRewriter.rewrite(sql);
+        assertEquals(
+            "SELECT column_name AS col_name, column_type AS data_type, column_comment AS comment "
+                + "FROM information_schema.columns "
+                + "WHERE catalog_name = 'DataLakeCatalog' AND schema_name = 'gold_transaction' "
+                + "AND table_name = 'transaction_fact' "
+                + "ORDER BY column_position",
+            rewritten
+        );
+    }
+
+    @Test
+    void describeWithBacktickedCatalogIsRewritten() {
+        String sql = "DESCRIBE `DataLakeCatalog`.`gold_transaction`.`transaction_fact`";
+        String rewritten = DlcQueryRewriter.rewrite(sql);
+        assertEquals(
+            "SELECT column_name AS col_name, column_type AS data_type, column_comment AS comment "
+                + "FROM information_schema.columns "
+                + "WHERE catalog_name = 'DataLakeCatalog' AND schema_name = 'gold_transaction' "
+                + "AND table_name = 'transaction_fact' "
+                + "ORDER BY column_position",
+            rewritten
+        );
+    }
+
+    @Test
     void nonDescribeQueryIsPassedThrough() {
         String sql = "SELECT * FROM gold_transaction.transaction_fact LIMIT 10";
         String rewritten = DlcQueryRewriter.rewrite(sql);
