@@ -16,6 +16,9 @@
  */
 package com.tencent.dlc.core.jdbc;
 
+import com.tencent.dlc.core.query.DlcQueryRewriter;
+import com.tencent.dlc.core.query.DlcQueryRewriter.DescribeTarget;
+import com.tencent.dlc.core.result.DlcDescribeFallback;
 import com.tencent.dlc.core.result.DlcSingleColumnMetaData;
 
 import java.io.InputStream;
@@ -48,16 +51,30 @@ class SafeMetaDataPreparedStatement extends SafeMetaDataStatement implements Pre
 
     private final PreparedStatement delegate;
     private final SafeMetaDataConnection connection;
+    private final String sql;
 
     SafeMetaDataPreparedStatement(PreparedStatement delegate, SafeMetaDataConnection connection, String sql) {
         super(delegate, connection);
         this.delegate = delegate;
         this.connection = connection;
+        this.sql = sql;
     }
 
     @Override
     public ResultSet executeQuery() throws SQLException {
-        return SafeMetaDataConnection.wrap(delegate.executeQuery());
+        DescribeTarget target = DlcQueryRewriter.parseDescribe(sql);
+        ResultSet resultSet = delegate.executeQuery();
+        if (target == null) {
+            return SafeMetaDataConnection.wrap(resultSet);
+        }
+        return SafeMetaDataConnection.wrap(
+            DlcDescribeFallback.materialize(target, connection.getDelegate(), resultSet));
+    }
+
+    @Override
+    public boolean execute() throws SQLException {
+        recordDescribe(DlcQueryRewriter.parseDescribe(sql));
+        return delegate.execute();
     }
 
     @Override
@@ -164,11 +181,6 @@ class SafeMetaDataPreparedStatement extends SafeMetaDataStatement implements Pre
     @Override
     public void setObject(int parameterIndex, Object x) throws SQLException {
         delegate.setObject(parameterIndex, x);
-    }
-
-    @Override
-    public boolean execute() throws SQLException {
-        return delegate.execute();
     }
 
     @Override

@@ -28,8 +28,9 @@ import com.tencent.dlc.cli.output.TableFormatter;
 import com.tencent.dlc.cli.output.YamlFormatter;
 import com.tencent.dlc.cli.util.ProgressReporter;
 import com.tencent.dlc.core.TencentDLCConstants;
-import com.tencent.dlc.core.result.DlcResultSetHandler;
 import com.tencent.dlc.core.query.DlcQueryRewriter;
+import com.tencent.dlc.core.query.DlcQueryRewriter.DescribeTarget;
+import com.tencent.dlc.core.result.DlcDescribeFallback;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -178,10 +179,12 @@ public class SqlCommand implements Callable<Integer> {
         }
 
         String sql;
+        DescribeTarget describeTarget;
         try {
             sql = loadSql();
             sql = substituteParameters(sql);
-            String rewritten = DlcQueryRewriter.rewrite(sql);
+            describeTarget = DlcQueryRewriter.parseDescribe(sql);
+            String rewritten = DlcQueryRewriter.rewrite(sql, config.getDatasourceConnectionName());
             if (!rewritten.equals(sql) && isVerbose()) {
                 spec.commandLine().getErr().println("Rewritten SQL: " + rewritten);
             }
@@ -196,7 +199,7 @@ public class SqlCommand implements Callable<Integer> {
             : ProgressReporter.console(System.err);
 
         try {
-            return execute(config, sql, progress);
+            return execute(config, sql, describeTarget, progress);
         } catch (SQLException e) {
             spec.commandLine().getErr().println("SQL execution failed: " + e.getMessage());
             if (isVerbose()) {
@@ -291,7 +294,8 @@ public class SqlCommand implements Callable<Integer> {
         return result.toString();
     }
 
-    private int execute(CliConfig config, String sql, ProgressReporter progress) throws SQLException {
+    private int execute(CliConfig config, String sql, DescribeTarget describeTarget, ProgressReporter progress)
+        throws SQLException {
         progress.report("Connecting to " + DlcConnectionFactory.buildUrl(config) + " ...");
 
         DlcConnectionFactory connectionFactory = new DlcConnectionFactory();
@@ -304,8 +308,13 @@ public class SqlCommand implements Callable<Integer> {
 
             do {
                 if (hasResultSet) {
-                    try (ResultSet resultSet = DlcResultSetHandler.safeMetaData(statement.getResultSet())) {
+                    try (ResultSet rawResultSet = statement.getResultSet()) {
                         if (!noResult) {
+                            // information_schema misses views and non-default catalogs;
+                            // fall back to a zero-row select that resolves the schema.
+                            ResultSet resultSet = describeTarget != null
+                                ? DlcDescribeFallback.materialize(describeTarget, connection, rawResultSet)
+                                : rawResultSet;
                             ResultFormatter formatter = createFormatter(config);
                             formatter.format(resultSet, out, maxRows);
                         }

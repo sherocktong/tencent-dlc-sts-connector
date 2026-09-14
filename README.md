@@ -193,7 +193,12 @@ tdlc sql -e "SELECT 1" --output-format yaml
 
 `DESCRIBE TABLE db.table` is rewritten automatically to a query against
 `information_schema.columns` because the DLC JDBC driver returns empty results
-for native `DESCRIBE` statements. Use `-v` to see the rewritten SQL.
+for native `DESCRIBE` statements. When that query returns no rows — which is
+always the case for views and for objects outside the connection's default
+catalog, because DLC pins `information_schema` to it — a fallback probes the
+target with `SELECT * FROM <name> LIMIT 0` and reports the column names and
+types from the result metadata (comments are only available through the
+`information_schema` path). Use `-v` to see the rewritten SQL.
 
 SQL options:
 
@@ -261,8 +266,8 @@ Update the `<file>` path in `com.tencent.dbeaver.ext.dlc/plugin.xml` if the driv
 
 Some DDL statements, such as `DESCRIBE TABLE`, return a `ResultSet` whose `getMetaData()` is `null` and whose row count is zero. Both the DBeaver plugin and the `tdlc` CLI share a common workaround in `com.tencent.dlc.core`:
 
-- The plugin loads the DLC driver through `com.tencent.dlc.core.jdbc.DlcDriverWrapper`. The wrapper provides a fallback metadata object when the driver returns none and transparently rewrites simple `DESCRIBE TABLE schema.table` statements into a query against `information_schema.columns`.
-- The CLI wraps each result set with `com.tencent.dlc.core.result.DlcResultSetHandler.safeMetaData(...)` and applies the same `DESCRIBE` rewrite before execution.
+- The plugin loads the DLC driver through `com.tencent.dlc.core.jdbc.DlcDriverWrapper`. The wrapper provides a fallback metadata object when the driver returns none and transparently rewrites simple `DESCRIBE TABLE schema.table` statements into a query against `information_schema.columns`. When that query comes back empty (views and non-default catalogs are absent from DLC's `information_schema`), it falls back to `com.tencent.dlc.core.result.DlcDescribeFallback`, which probes the target with `SELECT * FROM <name> LIMIT 0` and synthesizes a describe-shaped result from the probe metadata.
+- The CLI wraps each result set with `com.tencent.dlc.core.result.DlcResultSetHandler.safeMetaData(...)` and applies the same `DESCRIBE` rewrite and fallback before execution.
 
 ## License
 
